@@ -48,12 +48,12 @@ class Post(db.Model):
     @validates("content", "summary")
     def validate_cs(self, key, value):
         if key == "content":
-            if len(value) < 250:
+            if len(value) >= 250:
                 return value
             else:
                 raise ValueError('Content must be greater than 250 characters')
         elif key == "summary":
-            if len(value) > 250:
+            if len(value) <= 250:
                 return value
             else:
                 raise ValueError('Summary must be less than 250 characters')
@@ -69,10 +69,9 @@ class Post(db.Model):
     def validate_title(self, key, value):
         clickbait = ["Won't Believe", "Secret", "Top", "Guess"]
         for phrase in clickbait:
-            if phrase in value and value:
+            if phrase in value:
                 return value
-            else:
-                raise ValueError('Title must contain clickbait')
+        raise ValueError('Title must contain clickbait')
             
 
     def __repr__(self):
